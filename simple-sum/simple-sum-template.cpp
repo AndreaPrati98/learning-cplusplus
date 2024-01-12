@@ -6,14 +6,15 @@ using namespace std;
 
 #define N 40
 
-template <typename T>
+template <typename summable>
 
-void sum(T &res, int size, T arr[]) 
+void sum(summable &res, int size, const summable arr[]) 
 {
 
     for (int i = 0; i < size; i++)
     {
         res += arr[i];
+        // += must work for summable
     }
     
 }
