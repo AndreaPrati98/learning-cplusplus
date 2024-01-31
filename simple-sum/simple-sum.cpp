@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-#define N 40
+const int N = 40;
 
 void sum(int &res, int size, int arr[]) 
 {
