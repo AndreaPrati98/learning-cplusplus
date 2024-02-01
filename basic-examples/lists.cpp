@@ -1,5 +1,7 @@
 #include <iostream>
 
+using namespace std;
+
 class List_element 
 {
     public:
@@ -28,8 +30,17 @@ class List
 
         void advance() {cursor = cursor -> nextElement;}
         
-        void print();
-        
+        void print() {
+            List_element* h = head; // Let's start from the beginning
+
+            while(h != nullptr) {
+                cout << h -> data << ', ';
+                h = h->nextElement;
+            }
+
+            cout << "###" << endl;
+        }
+
     private: 
         List_element* head;
         List_element* cursor;
