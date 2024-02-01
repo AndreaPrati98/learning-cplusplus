@@ -49,5 +49,22 @@ class List
 
 
 int main() {
+    List a, b;
+
+    a.prepend(9);
+    a.prepend(8);
+
+    cout << "List a: " << endl;
+    a.print();
+
+    for (int i = 0; i < 40; i++) 
+    {
+        b.prepend(i*i);
+    }
+
+    cout << "List b: " << endl; 
+    
+    b.print();
+
     return 0;
 }
