@@ -54,6 +54,12 @@ class List
 
         ~List() {
             cout << "Destructor executed" << endl;
+
+            for(cursor = head; cursor != nullptr; ) {
+                cursor = head -> nextElement;
+                delete head;
+                head = cursor;
+            }
         }
 
         void prepend(int n)
@@ -89,6 +95,10 @@ class List
 
 int main() {
     List a, b;
+    int data[6] = {3, 4, 5, 2, 6, -3};
+
+    // List d(data, 6);
+    // List e(data, 10);
 
     a.prepend(9);
     a.prepend(8);
@@ -107,7 +117,7 @@ int main() {
     cout << endl;
 
     // List* c = new List(b);
-    List c = List(b);
+    List c(b);
     
     cout << "List c: " << endl; 
     c.print();
