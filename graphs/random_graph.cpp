@@ -24,13 +24,9 @@ inline bool randomBool(double probabilityTrue) {
     srand(clock()); 
     
     double randomValue = (rand() % 100);
-    cout << (randomValue/100) << endl;
+    // cout << (randomValue/100) << endl;
+    
     return (randomValue/100) >= probabilityTrue;
-    // return rand()/(RAND_MAX+1.0) < probabilityTrue;
-
-    // // Generate a random value between 0 and 1
-    // double randomValue = static_cast<double>(rand()) / (RAND_MAX + 1.0);
-    // return randomValue < probabilityTrue;
 
 }
 
