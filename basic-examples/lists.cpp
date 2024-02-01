@@ -52,6 +52,10 @@ class List
             cout << "End of the copy." << endl;
         }
 
+        ~List() {
+            cout << "Destructor executed" << endl;
+        }
+
         void prepend(int n)
         {
             // this case, the list is empty, the head points at nothing
