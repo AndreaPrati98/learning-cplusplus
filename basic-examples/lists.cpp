@@ -16,6 +16,42 @@ class List
     public:
         List(): head(nullptr), cursor(nullptr) {}
         
+        List(const List& lst) {
+            
+            cout << "Using copy constructor" << endl;
+
+            if(lst.head == nullptr) {
+                
+                // the list we are trying to copy is just an empty list
+                head = nullptr;
+                cursor = nullptr;
+
+            } else {
+                
+                List_element* h = new List_element();
+                List_element* previous;
+
+                this -> head = h; // the head of this list points to the new list element
+                h -> data = lst.head -> data; // fill the data of the list element at the head of our list
+                previous = h; // memorize that the element we just filled will be the previous of the next one
+
+                this -> cursor = lst.head -> nextElement; // with the cursor we need to point at the next element
+                while( cursor != nullptr ) { // it's a for but if could also just be a while
+                    
+                    h = new List_element();
+
+                    h -> data = cursor -> data;
+                    previous -> nextElement = h;
+                    
+                    this -> cursor = this -> cursor -> nextElement;
+                    previous = h;
+                }
+                cursor = head;
+            }
+
+            cout << "End of the copy." << endl;
+        }
+
         void prepend(int n)
         {
             // this case, the list is empty, the head points at nothing
@@ -34,8 +70,8 @@ class List
             List_element* h = head; // Let's start from the beginning
 
             while(h != nullptr) {
-                cout << h -> data << ', ';
-                h = h->nextElement;
+                cout << h -> data << ", ";
+                h = h -> nextElement;
             }
 
             cout << "###" << endl;
@@ -47,7 +83,6 @@ class List
 };
 
 
-
 int main() {
     List a, b;
 
@@ -57,14 +92,23 @@ int main() {
     cout << "List a: " << endl;
     a.print();
 
-    for (int i = 0; i < 40; i++) 
+    for (int i = 0; i < 10; i++) 
     {
         b.prepend(i*i);
     }
 
     cout << "List b: " << endl; 
-    
     b.print();
+
+    cout << endl;
+
+    // List* c = new List(b);
+    List c = List(b);
+    
+    cout << "List c: " << endl; 
+    c.print();
+
+    
 
     return 0;
 }
