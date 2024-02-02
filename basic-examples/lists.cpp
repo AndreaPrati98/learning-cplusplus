@@ -52,6 +52,39 @@ class List
             cout << "End of the copy." << endl;
         }
 
+        List(const int* arr, int size) {
+            
+            List_element* current = new List_element();
+            List_element* previous;
+
+            if( size < 1) {
+                cout << "The size is too small" << endl;
+            }
+            
+            head = current; 
+            cout << "The new List has head at: " << hex << head << endl;
+            
+            head -> data = arr[0];
+            previous = head;
+            cursor = head; 
+
+            for (int i = 1; i < size; i++)
+            {
+                // cout << "Copying element: " << dec << arr[i] << endl;
+                
+                current = new List_element();
+                current -> data = arr[i];
+                previous -> nextElement = current;
+                
+                previous = current;
+                cursor = current;
+                
+            }
+
+            cursor -> nextElement = nullptr;
+            
+        }
+
         ~List() {
             cout << "Destructor executed" << endl;
 
@@ -95,10 +128,6 @@ class List
 
 int main() {
     List a, b;
-    int data[6] = {3, 4, 5, 2, 6, -3};
-
-    // List d(data, 6);
-    // List e(data, 10);
 
     a.prepend(9);
     a.prepend(8);
@@ -122,7 +151,15 @@ int main() {
     cout << "List c: " << endl; 
     c.print();
 
-    
+    int data[10] = { 3, 4, 5, 2, 6, -3 }; // the others values are auto-filled to zero
+
+    List d(data, 6);
+    cout << "List d: " << endl; 
+    d.print();
+
+    List e(data, 10);
+    cout << "List e: " << endl; 
+    e.print();
 
     return 0;
 }
