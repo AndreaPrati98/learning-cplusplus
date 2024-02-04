@@ -50,7 +50,7 @@ Considering the class PriorityQueue:
 
 The last class is the ShortestPathAlgo, which implements the algo itself. It requires both the previous presented classes' instances and an additional ADT to maintain the parent relationship of the shortest path.
 
-Considering the class Shortest Path:
+Considering the class ShortestPath:
 - [ ] `vertices(List)`: list of vertices in G(V,E).
 - [ ] `path(u, w)`: find shortest path between u-w and returns the sequence of vertices representing shorest path u-v1-v2-…-vn-w.
 - [ ] `path_size(u, w)`: return the path cost associated with the shortest path.
@@ -58,3 +58,14 @@ Considering the class Shortest Path:
 ## Assumptions
 - edges are undirected
 - non-negative costs
+
+
+# Further notions
+## Min Heap (priorityQueue)
+A heap (from [wikipedia](https://en.wikipedia.org/wiki/Heap_(data_structure))) is a data structure tree-based DS that satisfies the **heap property**: 
+- in a *max heap*, for any given node C, if P is a parent node of C, then the key (the value) of P is greater than or equal to the key of C. 
+- in a *min heap*, the key of P is less than or equal to the key of C. 
+
+It's a DS really efficient for implementing the ADT called priority queue. Keep in mind a heap <u>is not an sorted DS</u>. The common implementation of a heap is a binary heap, in which the tree is a complete binary tree. 
+
+How can I represent it with a more common DS? Yes, for a min-heap (binary) we can a list, considering that the index used would be: `2i + j`, where `j` can be 1 or 2.
