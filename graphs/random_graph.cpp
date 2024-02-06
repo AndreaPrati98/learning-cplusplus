@@ -7,7 +7,7 @@ using namespace std;
 const int SIZE = 10;
 
 /// @brief density of the graph
-const double DENSITY = 0.2;
+const double DENSITY = 0.5;
 
 /// @brief Minimum weigth possible on an edge
 const int MIN_WEIGTH = 1;
@@ -86,7 +86,6 @@ inline int randomWeight(double probabilityTrue, int minWeigth, int maxWeigth) {
 
 }
 
-
 int** Graph::create_random_graph(int size, float density, int minWeigth, int maxWeigth) {
     srand(clock());
 
@@ -101,6 +100,7 @@ int** Graph::create_random_graph(int size, float density, int minWeigth, int max
     for (int i = 0; i < size; ++i)
     {
         // now I add edges accordingly to density, the probability and edge exists
+        // important to use j = i otherwise we risk to overwrite 
         for (int j = i; j < size; j++) {
             // cout << "Cycle with i: " << i << " and j: "<< j << endl;
             
@@ -111,7 +111,7 @@ int** Graph::create_random_graph(int size, float density, int minWeigth, int max
                 int weight = randomWeight(density, minWeigth, maxWeigth);
                 if (weight) {
                     cout << "Weigth: " << weight << " at (i,j): " << i << ',' << j << endl;
-                    // count++;
+                    
                 }
                 graph[i][j] = graph[j][i] = weight;
             }
@@ -173,16 +173,34 @@ bool Graph::adjacent(int x, int y) {
 
 vector<int> Graph::neighbors(int x) {
     int* row = adjacencyMatrix[x];
+    vector<int> res;
 
-    cout << row[1] << endl;
-
+    for (int i = 0; i < numVertices; i++)
+    {
+        cout << row[i] << ", ";
+        if(row[i]) {
+            res.push_back(row[i]);
+        }
+    }
+    cout << endl;
+    
+    return res;
 }
 
 int main() {
     
     Graph gr(SIZE, DENSITY);
 
+    vector<int> vect = gr.neighbors(3);
+
     
+    cout << "Printing vector of neighbors" << endl;
+    for (int i = 0; i < vect.size(); i++)
+    {
+        cout << vect[i] << ", ";
+    }
+    
+    cout << endl;
     
     return 0;
 }
