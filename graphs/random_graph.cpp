@@ -3,19 +3,68 @@
 
 using namespace std;
 
-const int SIZE = 4;
-const double DENSITY = 0.3;
+/// @brief Number of nodes of the graph
+const int SIZE = 10;
 
-void printMatrix(bool** const matrix, int rows, int cols) {
+/// @brief density of the graph
+const double DENSITY = 0.2;
+
+/// @brief Minimum weigth possible on an edge
+const int MIN_WEIGTH = 1;
+
+/// @brief Maximum weigth possible on an edge
+const int MAX_WEIGTH = 10;
+
+
+class Graph {
+public:
+    Graph(int numVertices, double density) : numVertices(numVertices), density(density) {
+        adjacencyMatrix = create_random_graph(numVertices, density);
+    };
+    
+    /// Return number of vertices
+    int V() {
+        return numVertices;
+    };
+
+    /// Return number of edges
+    int E() {
+        return numEdges;
+    }; 
+
+    /// Test whether there is an edge from x to y
+    bool adjacent(int x, int y); 
+    
+    /// List all nodes y such that there is an edge from x to y
+    std::vector<int> neighbors(int x); 
+    
+    void add(int x, int y, double weight); // Add the edge from x to y
+    void remove(int x, int y); // Remove the edge from x to y
+    double get_node_value(int x); // Return the value associated with node x
+    void set_node_value(int x, double value); // Set the value associated with node x
+    double get_edge_value(int x, int y); // Return the value associated with the edge (x, y)
+    void set_edge_value(int x, int y, double value); // Set the value associated with the edge (x, y)
+
+private:
+
+    int** create_random_graph(int size, float density, int minWeigth = 1.0, int maxWeigth = 10.0);
+    int numVertices;
+    int numEdges;
+    int** adjacencyMatrix;
+    double density;
+    // std::vector<std::vector<std::pair<int, double>>> adjacencyList;
+};
+
+void printMatrix(int** const matrix, int rows, int cols) {
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
-            std::cout << matrix[i][j] << " ";
+            cout << matrix[i][j] << " ";
         }
-        std::cout << std::endl;
+        cout << endl;
     }
 }
 
-inline bool randomBool(double probabilityTrue) {
+inline int randomWeight(double probabilityTrue, int minWeigth, int maxWeigth) {
     if (probabilityTrue > 1) 
     {
         cout << "Huston, we have a problem" << endl;
@@ -24,37 +73,47 @@ inline bool randomBool(double probabilityTrue) {
     srand(clock()); 
     
     double randomValue = (rand() % 100);
-    // cout << (randomValue/100) << endl;
+    
+    if ((randomValue/100) < probabilityTrue) {
+        // cout << "Random value: " << (randomValue/100) << " probability value: " << probabilityTrue << endl;
+        
+        randomValue = (rand() % maxWeigth) + 1;
+        // cout << static_cast<int>(randomValue) << endl;
+        return static_cast<int>(randomValue);
+    }
 
-    return (randomValue/100) < probabilityTrue;
+    return 0;
 
 }
 
 
-bool** create_random_graph(int size, float density) {
+int** Graph::create_random_graph(int size, float density, int minWeigth, int maxWeigth) {
     srand(clock());
 
-    bool** graph = new bool*[size]; // creating a graph as a matrix
+    int** graph = new int*[size]; // creating a graph as a matrix
 
     // let's declare all the rows
     for (int i = 0; i < size; i++)
     {
-        graph[i] = new bool[size];
+        graph[i] = new int[size];
     }
         
-
     for (int i = 0; i < size; ++i)
     {
         // now I add edges accordingly to density, the probability and edge exists
-        for (int j = 0; j < size; j++) {
+        for (int j = i; j < size; j++) {
             // cout << "Cycle with i: " << i << " and j: "<< j << endl;
             
             if (i == j) {
                 
-                graph[i][j] = false; // no loops
+                graph[i][j] = 0; // no loops
             } else {
-                
-                graph[i][j] = graph[j][i] = randomBool(density);;
+                int weight = randomWeight(density, minWeigth, maxWeigth);
+                if (weight) {
+                    cout << "Weigth: " << weight << " at (i,j): " << i << ',' << j << endl;
+                    // count++;
+                }
+                graph[i][j] = graph[j][i] = weight;
             }
             
         }        
@@ -107,9 +166,24 @@ bool is_connected(bool *graph[], int size)
     return 0;
 }
 
-int main() {
-    bool** graph = create_random_graph(SIZE, DENSITY);
 
+bool Graph::adjacent(int x, int y) {
+    return adjacencyMatrix[x][y];
+}
+
+vector<int> Graph::neighbors(int x) {
+    int* row = adjacencyMatrix[x];
+
+    cout << row[1] << endl;
+
+}
+
+int main() {
+    
+    Graph gr(SIZE, DENSITY);
+
+    
+    
     return 0;
 }
 
