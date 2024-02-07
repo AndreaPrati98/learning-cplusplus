@@ -13,24 +13,24 @@ Let's consider that:
 - the graph is <u>undirected</u>
   
 ## Turn in
-- [ ] Create a procedure to randomly generate graph given a certain density and a distrance range.
+- [x] Create a procedure to randomly generate graph given a certain density and a distrance range.
 - [ ] Implement the Dijkstra's algorithm.
 - [ ] Using densities 20% and 40% on a graph with 50 nodes with distance range from 1.0 to 10.0 compute the average path length (using 49 paths). Omit the non-existing edges from the average.
 - [ ] For a set of randomly generated graphs an average shortest path
   
 ## Recall of the algorithm
-There are needed three basics abstractions: Graph, PriorityQueue and ShortestPath algo. It's needed to decide the naming convention for the vertices (V), by convention, generally they are mapped onto a set of integers in the range `0` -> `|V|-1`. 
+There are needed three basics abstractions: **Graph**, **PriorityQueue** and **ShortestPath** algo. It's needed to decide the naming convention for the vertices (V), by convention, generally they are mapped onto a set of integers in the range `0` -> `|V|-1`. 
 
 Let's describe the interfaces.
 
 ### Interface Graph
 This class will need:
-- [ ] `V(G)`: return number of vertices in the graph.
-- [ ] `E(G)`: returns number of edges in the graph.
-- [ ] `adjacent(G, x, y)`: tests whether there is an edge from node x to node y.
-- [ ] `neighbors(G, x)`: lists all nodes y such that there is an edge from x to y.
-- [ ] `add(G, x, y)`: adds to G the edge from x to y, if it is not there.
-- [ ] `delete(G, x, y)`: removes to G the edge from x to y, if it is not there.
+- [x] `V(G)`: return number of vertices in the graph.
+- [x] `E(G)`: returns number of edges in the graph.
+- [x] `adjacent(G, x, y)`: tests whether there is an edge from node x to node y.
+- [x] `neighbors(G, x)`: lists all nodes y such that there is an edge from x to y.
+- [x] `add(G, x, y)`: adds to G the edge from x to y, if it is not there.
+- [x] `remove(G, x, y)`: removes to G the edge from x to y, if it is not there.
 - [ ] `get_node_value(G, x)`: returns the value associated with the node x.
 - [ ] `set_node_value( G, x, a)`: sets the value associated with the node x to a.
 - [ ] `get_edge_value( G, x, y)`: returns the value associated to the edge (x,y).
