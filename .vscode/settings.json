@@ -6,6 +6,10 @@
         "queue": "cpp",
         "version": "cpp",
         "string": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "__availability": "cpp",
+        "__config": "cpp",
+        "deque": "cpp",
+        "new": "cpp"
     }
 }
