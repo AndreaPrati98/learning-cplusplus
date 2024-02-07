@@ -22,21 +22,27 @@ public:
         adjacencyMatrix = create_random_graph(numVertices, density);
     };
     
+    /// @brief Get the graph
+    /// @return Graph as adjacency matrix
+    int** get_graph() {
+        return adjacencyMatrix;
+    };
+    
     /// Return number of vertices
-    int V() {
+    int V(int** G) {
         return numVertices;
     };
 
     /// Return number of edges
-    int E() {
+    int E(int** G) {
         return numEdges;
     }; 
 
     /// Test whether there is an edge from x to y
-    bool adjacent(int x, int y); 
+    bool adjacent(int** G, int x, int y); 
     
     /// List all nodes y such that there is an edge from x to y
-    std::vector<int> neighbors(int x); 
+    std::vector<int> neighbors(int** G, int x); 
     
     void add(int x, int y, double weight); // Add the edge from x to y
     void remove(int x, int y); // Remove the edge from x to y
@@ -44,6 +50,7 @@ public:
     void set_node_value(int x, double value); // Set the value associated with node x
     double get_edge_value(int x, int y); // Return the value associated with the edge (x, y)
     void set_edge_value(int x, int y, double value); // Set the value associated with the edge (x, y)
+    bool is_connected(int *graph[]);
 
 private:
 
@@ -124,9 +131,9 @@ int** Graph::create_random_graph(int size, float density, int minWeigth, int max
     return graph;
 }
 
-bool is_connected(bool *graph[], int size) 
+bool Graph::is_connected(int *graph[]) 
 {
-    int old_size= 0, c_size = 0;
+    int old_size= 0, c_size = 0, size = numVertices;
 
     bool* close = new bool[size]; // if true the node can be reached from another
     bool* open = new bool[size]; // if true the node has already been reached
@@ -145,36 +152,39 @@ bool is_connected(bool *graph[], int size)
         {
             old_size = c_size;
             
-            for (int j = 0; j < size; j++)
-            {
-                open[j] = open[j] || graph[i][j];
-            }
-            
-
             if(open[i] && (close[i] == false)) 
             {
                 // if the i-th node has been already reached but is not in the closed list, yet
                 close[i] = true;
                 c_size++;
             }
+
+            for (int j = 0; j < size; j++)
+            {
+                // or the j node is in the open set or we add it in case the is an edge i,j.
+                open[j] = open[j] || graph[i][j];
+            }
+            
         }
+
+        if(old_size == c_size) return false;
+        if(c_size == size) return true;
     }
 
-    if(c_size == size) return true;
-    if(old_size == c_size) return false;
     
     return 0;
 }
 
 
-bool Graph::adjacent(int x, int y) {
-    return adjacencyMatrix[x][y];
+bool Graph::adjacent(int** G, int x, int y) {
+    return G[x][y];
 }
-
-vector<int> Graph::neighbors(int x) {
-    int* row = adjacencyMatrix[x];
+ 
+vector<int> Graph::neighbors(int** G, int x) {
+    int* row = G[x];
     vector<int> res;
 
+    cout << "Printing the row: " << x << endl;
     for (int i = 0; i < numVertices; i++)
     {
         cout << row[i] << ", ";
@@ -191,7 +201,7 @@ int main() {
     
     Graph gr(SIZE, DENSITY);
 
-    vector<int> vect = gr.neighbors(3);
+    vector<int> vect = gr.neighbors(gr.get_graph(), 3);
 
     
     cout << "Printing vector of neighbors" << endl;
@@ -201,6 +211,10 @@ int main() {
     }
     
     cout << endl;
+
+    bool isConnected = gr.is_connected(gr.get_graph());
+
+    cout << "Is the graph connected? " << isConnected << endl;
     
     return 0;
 }
