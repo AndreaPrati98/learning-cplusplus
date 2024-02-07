@@ -11,6 +11,8 @@
         "__config": "cpp",
         "deque": "cpp",
         "new": "cpp",
-        "bitset": "cpp"
+        "bitset": "cpp",
+        "tuple": "cpp",
+        "stdexcept": "cpp"
     }
 }
