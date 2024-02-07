@@ -167,6 +167,7 @@ bool Graph::is_connected(int *graph[])
             
         }
 
+        // if after the iteration the size of the closed set doesn't change then stop.
         if(old_size == c_size) return false;
         if(c_size == size) return true;
     }
