@@ -1,13 +1,14 @@
 #include <iostream>
 #include <ctime>
+#include <set>
 
 using namespace std;
 
 /// @brief Number of nodes of the graph
-const int SIZE = 10;
+const int SIZE = 50;
 
 /// @brief density of the graph
-const double DENSITY = 0.5;
+const double DENSITY = 0.2;
 
 /// @brief Minimum weigth possible on an edge
 const int MIN_WEIGTH = 1;
@@ -42,14 +43,14 @@ public:
     bool adjacent(int** G, int x, int y); 
     
     /// List all nodes y such that there is an edge from x to y
-    std::vector<int> neighbors(int** G, int x); 
+    set<int> neighbors(int** G, int x); 
     
     void add(int** G, int x, int y); // Add the edge from x to y
     void remove(int** G, int x, int y); // Remove the edge from x to y
     // double get_node_value(int x); // Return the value associated with node x
     // void set_node_value(int x, double value); // Set the value associated with node x
-    double get_edge_value(int x, int y); // Return the value associated with the edge (x, y)
-    void set_edge_value(int x, int y, double value); // Set the value associated with the edge (x, y)
+    int get_edge_value(int** G, int x, int y); // Return the value associated with the edge (x, y)
+    void set_edge_value(int** G, int x, int y, int value); // Set the value associated with the edge (x, y)
     bool is_connected(int *graph[]);
 
 private:
@@ -177,14 +178,14 @@ bool Graph::adjacent(int** G, int x, int y) {
     return G[x][y];
 }
  
-vector<int> Graph::neighbors(int** G, int x) {
+set<int> Graph::neighbors(int** G, int x) {
     int* row = G[x];
-    vector<int> res;
+    set<int> res;
 
     for (int i = 0; i < numVertices; i++)
     {
         if(row[i]) {
-            res.push_back(row[i]);
+            res.insert(row[i]);
         }
     }
     
@@ -207,30 +208,35 @@ inline void Graph::remove(int** G, int x, int y) {
     G[x][y] = 0;
 }
 
+inline int Graph::get_edge_value(int** G, int x, int y) {
+    return G[x][y];
+}
 
+inline void Graph::set_edge_value(int** G, int x, int y, int value) {
+    G[x][y] = G[y][x] = value;
+}
 
 int main() {
     
     Graph gr(SIZE, DENSITY);
+    int** G = gr.get_graph();
 
-    vector<int> vect = gr.neighbors(gr.get_graph(), 3);
+    set<int> neighbors = gr.neighbors(G, 3);
 
     
-    cout << "Printing vector of neighbors" << endl;
-    for (int i = 0; i < vect.size(); i++)
+    cout << "Printing set of neighbors" << endl;
+    for (auto neighbor : neighbors)
     {
-        cout << vect[i] << ", ";
+        cout << neighbor << ", ";
     }
     
     cout << endl;
 
-    bool isConnected = gr.is_connected(gr.get_graph());
+    bool isConnected = gr.is_connected(G);
 
     cout << "Is the graph connected? " << isConnected << endl;
-    
-    gr.add(gr.get_graph(), 3, 2);
 
-    printMatrix(gr.get_graph(), gr.V(gr.get_graph()), gr.V(gr.get_graph()));
+    // printMatrix(G, gr.V(G), gr.V(G));
 
     return 0;
 }

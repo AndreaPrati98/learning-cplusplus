@@ -10,6 +10,7 @@
         "__availability": "cpp",
         "__config": "cpp",
         "deque": "cpp",
-        "new": "cpp"
+        "new": "cpp",
+        "bitset": "cpp"
     }
 }
