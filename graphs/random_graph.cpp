@@ -46,8 +46,8 @@ public:
     
     void add(int** G, int x, int y); // Add the edge from x to y
     void remove(int** G, int x, int y); // Remove the edge from x to y
-    double get_node_value(int x); // Return the value associated with node x
-    void set_node_value(int x, double value); // Set the value associated with node x
+    // double get_node_value(int x); // Return the value associated with node x
+    // void set_node_value(int x, double value); // Set the value associated with node x
     double get_edge_value(int x, int y); // Return the value associated with the edge (x, y)
     void set_edge_value(int x, int y, double value); // Set the value associated with the edge (x, y)
     bool is_connected(int *graph[]);
@@ -206,6 +206,8 @@ void Graph::add(int **G, int x, int y) {
 inline void Graph::remove(int** G, int x, int y) {
     G[x][y] = 0;
 }
+
+
 
 int main() {
     
