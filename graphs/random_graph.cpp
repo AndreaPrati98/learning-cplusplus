@@ -44,7 +44,7 @@ public:
     /// List all nodes y such that there is an edge from x to y
     std::vector<int> neighbors(int** G, int x); 
     
-    void add(int x, int y, double weight); // Add the edge from x to y
+    void add(int** G, int x, int y); // Add the edge from x to y
     void remove(int x, int y); // Remove the edge from x to y
     double get_node_value(int x); // Return the value associated with node x
     void set_node_value(int x, double value); // Set the value associated with node x
@@ -58,8 +58,8 @@ private:
     int numVertices;
     int numEdges;
     int** adjacencyMatrix;
-    double density;
     // std::vector<std::vector<std::pair<int, double>>> adjacencyList;
+    double density;
 };
 
 void printMatrix(int** const matrix, int rows, int cols) {
@@ -116,17 +116,13 @@ int** Graph::create_random_graph(int size, float density, int minWeigth, int max
                 graph[i][j] = 0; // no loops
             } else {
                 int weight = randomWeight(density, minWeigth, maxWeigth);
-                if (weight) {
-                    cout << "Weigth: " << weight << " at (i,j): " << i << ',' << j << endl;
-                    
-                }
                 graph[i][j] = graph[j][i] = weight;
             }
             
         }        
     }
 
-    printMatrix(graph, size, size);
+    // printMatrix(graph, size, size);
 
     return graph;
 }
@@ -185,18 +181,28 @@ vector<int> Graph::neighbors(int** G, int x) {
     int* row = G[x];
     vector<int> res;
 
-    cout << "Printing the row: " << x << endl;
     for (int i = 0; i < numVertices; i++)
     {
-        cout << row[i] << ", ";
         if(row[i]) {
             res.push_back(row[i]);
         }
     }
-    cout << endl;
     
     return res;
 }
+
+void Graph::add(int **G, int x, int y) {
+    int edge = G[x][y];
+
+    if(edge) {
+        cout << "The edge already exists." << endl;
+    } else {
+        int newEdge = randomWeight(density, MIN_WEIGTH, MAX_WEIGTH);
+        G[x][y] = G[y][x] = newEdge;
+        cout << "Added new edge: " << x << ", " << y << " . Weight: " << newEdge << endl;
+    }
+}
+
 
 int main() {
     
@@ -217,6 +223,10 @@ int main() {
 
     cout << "Is the graph connected? " << isConnected << endl;
     
+    gr.add(gr.get_graph(), 3, 2);
+
+    printMatrix(gr.get_graph(), gr.V(gr.get_graph()), gr.V(gr.get_graph()));
+
     return 0;
 }
 
