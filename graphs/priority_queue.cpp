@@ -2,6 +2,9 @@
 
 using namespace std;
 
+/**
+ * @brief Element of the priority queue. The first element represent the node number, the second one the priority.
+ */
 typedef tuple<int, int> queue_element;
 
 class PriorityQueue {
@@ -9,7 +12,7 @@ class PriorityQueue {
 private: 
     vector<queue_element> heap;
 
-    /// @brief Helper functions to maintain heap property. To be used when insert.
+    /// @brief Helper functions to maintain heap property. It checks that the parent is actually smaller then the added element 
     /// @param index 
     void heapifyUp(int index) {
         /*
@@ -23,8 +26,9 @@ private:
         }
     }
 
-    /// @brief Helper functions to maintain heap property. To be used when removed.
-    /// @param index 
+    /** @brief Helper functions to maintain heap property. It checks that the leaves are bigger then the parent. 
+     *  @param index - of the element we want to check
+    */ 
     void heapifyDown(int index) {
         int left = 2 * index + 1;
         int right = 2 * index + 2;
@@ -53,7 +57,7 @@ public:
     }
 
     inline void check_if_empty() {
-        if (heap.empty()) throw out_of_range("Heap is empty");
+        if (isEmpty()) throw out_of_range("Heap is empty");
     }
 
     inline bool isEmpty() {
@@ -70,8 +74,15 @@ public:
         check_if_empty();
 
         queue_element min = heap.front();
-        // todo
-        get<1>(min);
+        // substitue the first element of the heap (the root) with the last element of the heap (one of its leaves)
+        heap[0] = heap.back();
+        // then I discard the last element of the heap because it's a duplicate
+        heap.pop_back();
+        // I call the recurive function to adjust the tree (in array form, in this case)
+        heapifyDown(0);
+
+        return min;
+
     }
 
     int get_size() {
@@ -87,18 +98,66 @@ public:
 
         return os;
     }
+    
+    bool contains(queue_element element) {
+        for(const auto& e : heap) {
+            if (e == element) {
+                return true;
+            }
+        }
+        return false;
+    }
 
+    bool contains(int node) {
+        for(const auto& e : heap) {
+            if (get<0>(e) == node) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @brief Change the priority (ndoe value) of a queue element
+     * 
+     * @param element 
+     * @param priority 
+     */
+    void chgPriority(queue_element element, int priority) {
+        
+        for (int i = 0; i < heap.size(); ++i) {
+            if (heap[i] == element) {
+                // found the element to be changed
+                get<1>(heap[i]) = priority;
+                // if the updated element violates the heap property, we can either 'heapify' 
+                // depending on whether the updated element should move up or down in 
+                // the heap to restore the heap property.
+                if (i > 0 && get<1>(heap[i]) < get<1>(heap[(i - 1) / 2])) {
+                    
+                    heapifyUp(i);
+                } else {
+                    
+                    heapifyDown(i);
+                }
+                return;
+            }
+        }
+        throw invalid_argument("Element not found in the queue");
+    }
 
 };
 
 int main() {
     PriorityQueue pq;
 
-    pq.insert(1, 5);
     pq.insert(2, 4);
     pq.insert(3, 7);
+    pq.insert(1, 5);
 
     cout << pq << endl;
+
+    cout << get<0>(pq.extractMin()) << endl; // ! TBD yet
     
+    cout << pq << endl;
 
 }
