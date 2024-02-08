@@ -1,4 +1,9 @@
 # C++ learning homework
+Files in this folder:
+- `dijkstra_w_priority_queue.cpp`: This is the actual code that I submitted for the homework. 
+- `random_graph.cpp`: the file containing the implementation of the class Graph, I used this file to test by hands the randomic generation of the Graph.
+- `priority_queue.cpp`: it contains the implementation of the priority queue, as for the `random_graph.cpp`, I used a separated file to test by hand the implementation.
+## The assignment
 > This homework assignment is from the course "C++ for C Programmers, Part A" by professor Ira Pohl.
 
 The main goal is to implement the fameous [Dijkstra's algo](https://en.wikipedia.org/wiki/Dijkstra's_algorithm). Firstly, I need to write an (Abstract Data Type) ADT using C++. There are two options to represent the graph:
@@ -12,19 +17,19 @@ Let's consider that:
 - an edge will have a positive cost that is its distance. 
 - the graph is <u>undirected</u>
   
-## Turn in
+### Turn in
 - [x] Create a procedure to randomly generate graph given a certain density and a distrance range.
 - [ ] Implement the Dijkstra's algorithm.
 - [ ] Using densities 20% and 40% on a graph with 50 nodes with distance range from 1.0 to 10.0 compute the average path length (using 49 paths). Omit the non-existing edges from the average.
 - [ ] For a set of randomly generated graphs an average shortest path
   
-## Recall of the algorithm
+### Recall of the algorithm
 There are needed three basics abstractions: **Graph**, **PriorityQueue** and **ShortestPath** algo. It's needed to decide the naming convention for the vertices (V), by convention, generally they are mapped onto a set of integers in the range `0` -> `|V|-1`. 
 
 Let's describe the interfaces.
 
-### Interface Graph
-This class will need:
+#### Interfaces
+This class Graph will need:
 - [x] `V(G)`: return number of vertices in the graph.
 - [x] `E(G)`: returns number of edges in the graph.
 - [x] `adjacent(G, x, y)`: tests whether there is an edge from node x to node y.
@@ -56,7 +61,7 @@ Considering the class ShortestPath:
 - [ ] `path(u, w)`: find shortest path between u-w and returns the sequence of vertices representing shorest path u-v1-v2-…-vn-w.
 - [ ] `path_size(u, w)`: return the path cost associated with the shortest path.
 
-## Assumptions
+### Assumptions
 - edges are undirected
 - non-negative costs
 
