@@ -13,6 +13,7 @@
         "new": "cpp",
         "bitset": "cpp",
         "tuple": "cpp",
-        "stdexcept": "cpp"
+        "stdexcept": "cpp",
+        "__locale": "cpp"
     }
 }
