@@ -4,7 +4,7 @@
 using namespace std;
 
 /// @brief Number of nodes of the graph.
-const int SIZE = 50;
+const int SIZE = 5;
 
 /// @brief density of the graph.
 const float DENSITY = 0.2;
@@ -33,22 +33,28 @@ public:
     }
 
     /// Return number of vertices
-    inline int V() {
+    inline const int& V() const {
+        
         return numVertices;
     };
 
     /// Return number of edges
-    inline int E() {
+    inline int E() const {
         return numEdges;
     };
 
     void printMatrix(int** const matrix, int rows, int cols) {
+        cout << "Printing the matrix" << endl;
         for (int i = 0; i < rows; ++i) {
             for (int j = 0; j < cols; ++j) {
                 cout << matrix[i][j] << " ";
             }
             cout << endl;
         }
+    }
+
+    const float& getEdgeValue(int x, int y) const {
+        return adjacencyMatrix[x][y];
     }
 
 private:
@@ -65,13 +71,13 @@ private:
         
         // Define a distribution for the desired range
         // firstly for the probability of edge existance, secondly for the weight
-        uniform_real_distribution<double> distribution(0.0, 1.0);
-        double probability = distribution(gen);
+        uniform_real_distribution<double> prob_distribution(0.0, 1.0);
+        double probability = prob_distribution(gen);
 
-        uniform_real_distribution<double> distribution(1.0, 10.0);
+        uniform_real_distribution<double> weight_distribution(1.0, 10.0);
 
         // Generate a random double within the specified range
-        double rWeight = distribution(gen);
+        double rWeight = weight_distribution(gen);
 
         return (probability < density) * rWeight;
 
@@ -122,6 +128,7 @@ private:
     float** adjacencyMatrix;
     int numVertices; 
     int numEdges;
+    int k;
 };
 
 class PriorityQueue {
@@ -147,8 +154,23 @@ public:
 
 };
 
+ostream& operator<< (ostream& os, const Graph& graph) {
+    for(int i= 0; i < graph.V(); ++i) {
+        for(int j = 0; j < graph.V(); ++j) {
+            cout << graph.getEdgeValue(i,j) << " ";
+        }
+        cout << endl;
+    }
+
+    return os;
+}
+
 int main() {
 
     cout.precision(PRECISION);
+
+    Graph graph(SIZE);
+
+    cout << graph << endl;
 
 }
