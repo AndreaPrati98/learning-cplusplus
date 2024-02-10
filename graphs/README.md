@@ -65,6 +65,8 @@ Considering the class ShortestPath:
 - edges are undirected
 - non-negative costs
 
+## Notes about the implementation
+Given my background as Java developer I didn't know about the importance of chosing if a class has to be a member function or a non-friend non-member function. After some research on the web I discovered an article by Scott Meyers ([here](https://www.aristeia.com/Papers/CUJ_Feb_2000.pdf)); now I get why it was requested the assignment that most of the methods were having the graph itself as parameter of the function. Since it was already a good amount of work I preferred not to go crazy around this good practice and I did something that was faster to implement. 
 
 # Further notions
 ## Min Heap (priorityQueue)
