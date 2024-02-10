@@ -254,6 +254,121 @@ private:
 
 public:
     PriorityQueue() {}
+
+    /**
+     * @brief Insert tuple (node, weight) in the heap.
+     * 
+     * @param node 
+     * @param weight 
+     */
+    void insert(int node, int weight) {
+        heap.push_back(make_tuple(node, weight));
+        heapifyUp(heap.size() - 1); // need to check that the added element is less then its parent.
+    }
+
+    inline void checkIfEmpty() {
+        if (isEmpty()) throw out_of_range("Heap is empty");
+    }
+
+    inline bool isEmpty() {
+        return heap.empty();
+    }
+
+    /// @brief Return the minimum value in the heap **without extraction**.
+    /// @return - first element in the heap.
+    queue_element getMin() {
+        checkIfEmpty();
+
+        return heap.front();
+    }
+
+    /**
+     * @brief Extract the minimum value of the heap and perform modification on the array to maintain the heap property.
+     * 
+     * @return queue_element 
+     */
+    queue_element extractMin() {
+        checkIfEmpty();
+
+        queue_element min = heap.front();
+        // substitue the first element of the heap (the root) with the last element of the heap (one of its leaves)
+        heap[0] = heap.back();
+        // then I discard the last element of the heap because it's a duplicate
+        heap.pop_back();
+        // I call the recurive function to adjust the tree (in array form, in this case)
+        heapifyDown(0);
+
+        return min;
+
+    }
+
+    int getSize() const {
+        return heap.size();
+    }
+
+    inline const vector<queue_element>& getHeap() const {
+        return heap;
+    }
+    
+    /**
+     * @brief Given a queue_element it returnes true if it is in the heap and false if it's not.
+     * 
+     * @param element 
+     * @return true 
+     * @return false 
+     */
+    bool contains(queue_element element) const {
+        for(const auto& e : heap) {
+            if (e == element) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @brief Given a node it returns true if the node is somehow present in the heap and false if it's not.
+     * 
+     * @param node 
+     * @return true 
+     * @return false 
+     */
+    bool contains(int node) const {
+        for(const auto& e : heap) {
+            if (get<0>(e) == node) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @brief Change the priority (ndoe value) of a queue element
+     * 
+     * @param element 
+     * @param priority 
+     */
+    void chgPriority(queue_element element, int priority) {
+        
+        for (int i = 0; i < heap.size(); ++i) {
+            if (heap[i] == element) {
+                // found the element to be changed
+                get<1>(heap[i]) = priority;
+                // if the updated element violates the heap property, we can either 'heapify' 
+                // depending on whether the updated element should move up or down in 
+                // the heap to restore the heap property.
+                if (i > 0 && get<1>(heap[i]) < get<1>(heap[(i - 1) / 2])) {
+                    
+                    heapifyUp(i);
+                } else {
+                    
+                    heapifyDown(i);
+                }
+                return;
+            }
+        }
+        throw invalid_argument("Element not found in the queue");
+    }
 };
 
 class ShortestPath {
@@ -284,6 +399,17 @@ ostream& operator<< (ostream& os, const Graph& graph) {
 
     return os;
 }
+
+ostream& operator<<(ostream& os, const PriorityQueue& pq) {
+    cout << "Printing the priority queue:" << endl;
+
+    for(auto el : pq.getHeap()) {
+        cout << "(" << get<0>(el) << ", " << get<1>(el) << "); ";
+    }
+
+    return os;
+}
+
 
 int main() {
 
