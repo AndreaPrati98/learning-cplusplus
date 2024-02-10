@@ -39,7 +39,7 @@ public:
     };
 
     /// Return number of edges
-    inline int E() const {
+    inline const int& E() const {
         return numEdges;
     };
 
@@ -57,8 +57,42 @@ public:
         return adjacencyMatrix[x][y];
     }
 
+    inline void setEdgeValue(int x, int y, int value) {
+        adjacencyMatrix[x][y] = adjacencyMatrix[y][x] = value;
+    }
+
+    void add(int x, int y) {
+        int edge = adjacencyMatrix[x][y];
+
+        if(edge) {
+            cout << "The edge already exists." << endl;
+        } else {
+            int newEdge = randomWeight(MIN_WEIGTH, MAX_WEIGTH);
+            adjacencyMatrix[x][y] = adjacencyMatrix[y][x] = newEdge;
+            // cout << "Added new edge: " << x << ", " << y << " . Weight: " << newEdge << endl;
+        }
+    }
+
+    inline void Graph::remove(int** G, int x, int y) {
+       G[x][y] = 0;
+    }
+
 private:
     
+    inline float randomWeight(float minWeight, float maxWeight) {
+        // Define a random number generator engine
+        random_device rd;
+        mt19937 gen(rd());
+        
+        // Define a distribution for the desired range
+        // Define a distribution for the desired range
+        uniform_real_distribution<double> weight_distribution(1.0, 10.0);
+
+        // Generate a random double within the specified range
+        double rWeight = weight_distribution(gen);
+        return rWeight;
+    }
+
     inline float randomWeight(float density, float minWeight, float maxWeight) {
         if(density < 0 || density > 1) {
             throw invalid_argument("Density must stay between 0 and 1");
@@ -69,11 +103,11 @@ private:
         random_device rd;
         mt19937 gen(rd());
         
-        // Define a distribution for the desired range
         // firstly for the probability of edge existance, secondly for the weight
         uniform_real_distribution<double> prob_distribution(0.0, 1.0);
         double probability = prob_distribution(gen);
 
+        // Define a distribution for the desired range
         uniform_real_distribution<double> weight_distribution(1.0, 10.0);
 
         // Generate a random double within the specified range
