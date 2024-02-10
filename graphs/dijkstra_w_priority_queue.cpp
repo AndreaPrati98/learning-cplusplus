@@ -77,6 +77,50 @@ public:
        G[x][y] = 0;
     }
 
+    bool isConnected() const {
+        int old_size= 0, c_size = 0, size = numVertices;
+
+        bool* close = new bool[size]; // if true the node can be reached from another
+        bool* open = new bool[size]; // if true the node has already been reached
+
+        for (int i = 0; i < size; i++)
+        {
+            open[i] = close[i] = false;
+        }
+        open[0] = true;
+
+        // up to here it was initialization
+
+        while (c_size < size)
+        {
+            for(int i = 0; i < size; ++i)
+            {
+                old_size = c_size;
+                
+                if(open[i] && (close[i] == false)) 
+                {
+                    // if the i-th node has been already reached but is not in the closed list, yet
+                    close[i] = true;
+                    c_size++;
+                }
+
+                for (int j = 0; j < size; j++)
+                {
+                    // or the j node is in the open set or we add it in case the is an edge i,j.
+                    open[j] = open[j] || adjacencyMatrix[i][j];
+                }
+                
+            }
+
+            // if after the iteration the size of the closed set doesn't change then stop.
+            if(old_size == c_size) return false;
+            if(c_size == size) return true;
+        }
+
+        
+        return 0;
+    }
+
 private:
     
     inline float randomWeight(float minWeight, float maxWeight) {
