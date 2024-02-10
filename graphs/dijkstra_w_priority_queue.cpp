@@ -214,6 +214,44 @@ private:
 };
 
 class PriorityQueue {
+
+private: 
+    vector<queue_element> heap;
+
+    /// @brief Helper functions to maintain heap property. It checks that the parent is actually smaller then the added element 
+    /// @param index 
+    void heapifyUp(int index) {
+        /*
+        given the index we inserted the parent is checked
+        */
+        int parent = (index - 1) / 2;
+        while (index > 0 && get<1>(heap[index]) < get<1>(heap[parent])) {
+            swap(heap[index], heap[parent]);
+            index = parent;
+            parent = (index - 1) / 2;
+        }
+    }
+
+    /// @brief Helper functions to maintain heap property. It checks that the leaves are bigger then the parent. 
+    /// @param index - of the element we want to check
+    void heapifyDown(int index) {
+        int left = 2 * index + 1;
+        int right = 2 * index + 2;
+        int smallest = index;
+
+        if (left < heap.size() && get<1>(heap[left]) < get<1>(heap[index]))
+            smallest = left;
+
+        if (right < heap.size() && get<1>(heap[right]) < get<1>(heap[smallest]))
+            smallest = right;
+
+        if (smallest != index) {
+            // if we find 
+            swap(heap[index], heap[smallest]);
+            heapifyDown(smallest); // it's recursive
+        }
+    }
+
 public:
     PriorityQueue() {}
 };
