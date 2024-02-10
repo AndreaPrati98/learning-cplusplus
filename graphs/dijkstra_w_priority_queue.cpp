@@ -18,6 +18,10 @@ const float MAX_WEIGTH = 10;
 /// @brief Precision decimal number.
 const int PRECISION = 3;
 
+/**
+ * @brief Element of the priority queue. The first element represent the node number, the second one the priority.
+ */
+typedef tuple<int, int> queue_element;
 
 class Graph {
 public:
