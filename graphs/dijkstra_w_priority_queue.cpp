@@ -1,10 +1,12 @@
 #include <iostream>
+
 #include <random>
+#include <set>
 
 using namespace std;
 
 /// @brief Number of nodes of the graph.
-const int SIZE = 5;
+const int SIZE = 50;
 
 /// @brief density of the graph.
 const float DENSITY = 0.2;
@@ -77,7 +79,7 @@ public:
         }
     }
 
-    inline void Graph::removeEdge(int x, int y) {
+    inline void removeEdge(int x, int y) {
        adjacencyMatrix[x][y] = 0;
     }
 
@@ -124,6 +126,28 @@ public:
         
         return 0;
     }
+
+    /**
+     * @brief Given the node we want to know the neighbors of a set of these neighbors is returned.
+     * 
+     * @param x 
+     * @return set<int> 
+     */
+    set<int> neighbors(int x) const {
+        float* row = adjacencyMatrix[x];
+        set<int> res;
+
+        for (int i = 0; i < numVertices; i++)
+        {
+            if(row[i]) {
+                res.insert(i);
+            }
+        }
+        
+        return res;
+
+    }
+
 
 private:
     
@@ -343,7 +367,7 @@ public:
     }
 
     /**
-     * @brief Change the priority (ndoe value) of a queue element
+     * @brief Change the priority (node value) of a queue element
      * 
      * @param element 
      * @param priority 
@@ -369,16 +393,48 @@ public:
         }
         throw invalid_argument("Element not found in the queue");
     }
+    
+    /**
+     * @brief Change the priority (node value) of a queue element
+     * 
+     * @param element 
+     * @param priority 
+     */
+    void chgPriority(int node, int priority) {
+        
+        for (int i = 0; i < heap.size(); ++i) {
+            if (get<0>(heap[i]) == node) {
+                // found the element to be changed
+                get<1>(heap[i]) = priority;
+                
+                // if the updated element violates the heap property, we can either 'heapify' 
+                // depending on whether the updated element should move up or down in 
+                // the heap to restore the heap property.
+                if (i > 0 && get<1>(heap[i]) < get<1>(heap[(i - 1) / 2])) {
+                    
+                    heapifyUp(i);
+                } else {
+                    
+                    heapifyDown(i);
+                }
+                return;
+            }
+        }
+        throw invalid_argument("Element not found in the queue");
+    }
 };
 
 class ShortestPath {
 
 private:
 
-    Graph graph;
-    PriorityQueue priorityQueue;  
+    Graph graph;  
 
 public:
+
+    const Graph& getGraph() const {
+        return graph;
+    }
 
     /**
      * @brief Returns the minimum distance from the source node (considering the dist[] array) 
@@ -404,44 +460,55 @@ public:
         return index;
     }
 
-    vector<float> path(int s, int t) const {
-        
-        // the algorithm works by creating two arrays, one for the distances
-        // and one as close set
-        double dist[graph.V()];
-        bool cSet[graph.V()];
+    vector<int> path(int s, int t) const {
 
-        // the distance array has to contains inifty everywhere but the source node
-        for (int i = 0; i < graph.V(); i++){
-            dist[i] = numeric_limits<float>::infinity();
-            cSet[i] = false;
-        }
+        int N = graph.V();
+
+        PriorityQueue priorityQueue = PriorityQueue();
+        
+        
+
+        /* The algorithm works by creating three arrays:
+         - distances from the source
+         - close set to keep track of the visited nodes
+         - array keeping track of the previous node for each node (to backtrack the actual shortest path)
+        */ 
+        vector<int> prev(N, -1); 
+        vector<float> dist(N, numeric_limits<float>::infinity()); 
+        vector<bool> cSet(N, false); 
 
         dist[s] = 0;
+        priorityQueue.insert(s, 0);
 
-        // loop through other nodes
-        for (int c = 0; c < graph.V() - 1; c++){
+        while (!priorityQueue.isEmpty())
+        {
+            queue_element minElement = priorityQueue.extractMin();
+
+            int u = get<0>(minElement);
             
-            int u = minDistance(dist, cSet);
-            cSet[u] = true;
-
-            // now there is the loop for the adjacent nodes
-            for (int v = 0; v < graph.V(); v++){
-                if (
-                    !cSet[v] && graph.getEdgeValue(u, v) && 
-                    dist[u] != numeric_limits<float>::infinity() && 
-                    (dist[u] + graph.getEdgeValue(u, v)) < dist[v]
-                    )
-                    dist[v] = dist[u] + graph.getEdgeValue(u, v); 
+            for (const auto& v : graph.neighbors(u))
+            {
+                float alt = dist[u] + graph.getEdgeValue(u, v);
+                if(alt < dist[v]) {
+                    dist[v] = alt;
+                    prev[v] = u;
+                    if(priorityQueue.contains(v)) {
+                        priorityQueue.insert(v, alt);
+                    } else {
+                        priorityQueue.chgPriority(v, alt);
+                    }
+                }
             }
+            
         }
 
-        return vector<float> (dist, dist + graph.V());
+        return prev;
+        
     }
 
     vector<int> path_size(int s, int t);
 
-    ShortestPath(): graph(), priorityQueue() {}
+    ShortestPath(int size = SIZE, float density = DENSITY): graph(size, density) {}
 
 };
 
@@ -459,7 +526,7 @@ ostream& operator<< (ostream& os, const Graph& graph) {
 ostream& operator<<(ostream& os, const PriorityQueue& pq) {
     cout << "Printing the priority queue:" << endl;
 
-    for(auto el : pq.getHeap()) {
+    for(const auto& el : pq.getHeap()) {
         cout << "(" << get<0>(el) << ", " << get<1>(el) << "); ";
     }
 
@@ -471,8 +538,23 @@ int main() {
 
     cout.precision(PRECISION);
 
-    Graph graph(SIZE);
 
+    ShortestPath sp = ShortestPath();
+
+    Graph graph = sp.getGraph();
+
+
+    cout << "The graph generated has the following adjacency matrix:" << endl;
     cout << graph << endl;
+
+    cout << "Is the graph connected? " << graph.isConnected() << endl;
+
+    vector<int> shortestPath = sp.path(0, 3);
+    cout << "Shortest path from 0 to 3: " << endl;
+    for(const auto& node : shortestPath) {
+        cout << node << ", " ;
+    }
+
+    cout << endl;
 
 }
