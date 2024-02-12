@@ -65,7 +65,7 @@ public:
         adjacencyMatrix[x][y] = adjacencyMatrix[y][x] = value;
     }
 
-    void add(int x, int y) {
+    void addEdge(int x, int y) {
         int edge = adjacencyMatrix[x][y];
 
         if(edge) {
@@ -77,8 +77,8 @@ public:
         }
     }
 
-    inline void Graph::remove(int** G, int x, int y) {
-       G[x][y] = 0;
+    inline void Graph::removeEdge(int x, int y) {
+       adjacencyMatrix[x][y] = 0;
     }
 
     bool isConnected() const {
@@ -374,13 +374,69 @@ public:
 class ShortestPath {
 
 private:
+
     Graph graph;
     PriorityQueue priorityQueue;  
 
 public:
 
-    vector<int> path(int s, int t) {
-        int dist[graph.V()];
+    /**
+     * @brief Returns the minimum distance from the source node (considering the dist[] array) 
+     * and only considering nodes not in the closed set.
+     * 
+     * @param dist 
+     * @param cSet 
+     * @return float 
+     */
+    float minDistance(double dist[], bool cSet[]) const {
+        float min = numeric_limits<float>::infinity();
+        int index;
+        
+        // for each vertex let's check if it is not in the closed set
+        // and is the minimum vertex among the others.
+        for (int v = 0; v < graph.V(); v++){
+            
+            if (dist[v] <= min && cSet[v] == false){
+                min = dist[v];
+                index = v;
+            }
+        }
+        return index;
+    }
+
+    vector<float> path(int s, int t) const {
+        
+        // the algorithm works by creating two arrays, one for the distances
+        // and one as close set
+        double dist[graph.V()];
+        bool cSet[graph.V()];
+
+        // the distance array has to contains inifty everywhere but the source node
+        for (int i = 0; i < graph.V(); i++){
+            dist[i] = numeric_limits<float>::infinity();
+            cSet[i] = false;
+        }
+
+        dist[s] = 0;
+
+        // loop through other nodes
+        for (int c = 0; c < graph.V() - 1; c++){
+            
+            int u = minDistance(dist, cSet);
+            cSet[u] = true;
+
+            // now there is the loop for the adjacent nodes
+            for (int v = 0; v < graph.V(); v++){
+                if (
+                    !cSet[v] && graph.getEdgeValue(u, v) && 
+                    dist[u] != numeric_limits<float>::infinity() && 
+                    (dist[u] + graph.getEdgeValue(u, v)) < dist[v]
+                    )
+                    dist[v] = dist[u] + graph.getEdgeValue(u, v); 
+            }
+        }
+
+        return vector<float> (dist, dist + graph.V());
     }
 
     vector<int> path_size(int s, int t);
