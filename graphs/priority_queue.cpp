@@ -89,15 +89,10 @@ public:
         return heap.size();
     }
 
-    friend ostream& operator<<(ostream& os, const PriorityQueue pq) {
-        cout << "Printing the priority queue:" << endl;
-
-        for(auto el : pq.heap) {
-            cout << "(" << get<0>(el) << ", " << get<1>(el) << "); ";
-        }
-
-        return os;
+    const vector<queue_element>& getHeap() const {
+        return heap;
     }
+    
     
     bool contains(queue_element element) {
         for(const auto& e : heap) {
@@ -146,6 +141,16 @@ public:
     }
 
 };
+
+ostream& operator<<(ostream& os, const PriorityQueue pq) {
+    cout << "Printing the priority queue:" << endl;
+
+    for(const auto& el : pq.getHeap()) {
+        cout << "(" << get<0>(el) << ", " << get<1>(el) << "); ";
+    }
+
+    return os;
+}
 
 int main() {
     PriorityQueue pq;
