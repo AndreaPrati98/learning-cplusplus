@@ -14,6 +14,10 @@
         "bitset": "cpp",
         "tuple": "cpp",
         "stdexcept": "cpp",
-        "__locale": "cpp"
+        "__locale": "cpp",
+        "sstream": "cpp",
+        "streambuf": "cpp",
+        "set": "cpp",
+        "iosfwd": "cpp"
     }
 }
