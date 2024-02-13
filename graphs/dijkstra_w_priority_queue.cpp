@@ -1,5 +1,4 @@
 #include <iostream>
-
 #include <random>
 #include <set>
 
@@ -237,6 +236,18 @@ private:
     int k;
 };
 
+ostream& operator<< (ostream& os, const Graph& graph) {
+    
+    for(int i= 0; i < graph.V(); ++i) {
+        for(int j = 0; j < graph.V(); ++j) {
+            cout << graph.getEdgeValue(i,j) << " ";
+        }
+        cout << endl;
+    }
+
+    return os;
+}
+
 class PriorityQueue {
 
 private: 
@@ -424,6 +435,16 @@ public:
     }
 };
 
+ostream& operator<<(ostream& os, const PriorityQueue& pq) {
+    cout << "Printing the priority queue:" << endl;
+
+    for(const auto& el : pq.getHeap()) {
+        cout << "(" << get<0>(el) << ", " << get<1>(el) << "); ";
+    }
+
+    return os;
+}
+
 class ShortestPath {
 
 private:
@@ -466,7 +487,7 @@ public:
 
         PriorityQueue priorityQueue = PriorityQueue();
         
-        
+        cout << "Shortest path between: (" << s << ", "<< t << ")"<< endl;
 
         /* The algorithm works by creating three arrays:
          - distances from the source
@@ -479,9 +500,14 @@ public:
 
         dist[s] = 0;
         priorityQueue.insert(s, 0);
-
+        int cycle = 0;
+        
+        cout << "Queue status: " << priorityQueue << endl;
+        
         while (!priorityQueue.isEmpty())
         {
+            cout << "Cycle number " << cycle << endl;
+            
             queue_element minElement = priorityQueue.extractMin();
 
             int u = get<0>(minElement);
@@ -511,28 +537,6 @@ public:
     ShortestPath(int size = SIZE, float density = DENSITY): graph(size, density) {}
 
 };
-
-ostream& operator<< (ostream& os, const Graph& graph) {
-    for(int i= 0; i < graph.V(); ++i) {
-        for(int j = 0; j < graph.V(); ++j) {
-            cout << graph.getEdgeValue(i,j) << " ";
-        }
-        cout << endl;
-    }
-
-    return os;
-}
-
-ostream& operator<<(ostream& os, const PriorityQueue& pq) {
-    cout << "Printing the priority queue:" << endl;
-
-    for(const auto& el : pq.getHeap()) {
-        cout << "(" << get<0>(el) << ", " << get<1>(el) << "); ";
-    }
-
-    return os;
-}
-
 
 int main() {
 
