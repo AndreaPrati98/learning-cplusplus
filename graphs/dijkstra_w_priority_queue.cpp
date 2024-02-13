@@ -274,6 +274,7 @@ private:
         int right = 2 * index + 2;
         int smallest = index;
 
+        // cout << "Heapifying down" << endl;
         if (left < heap.size() && get<1>(heap[left]) < get<1>(heap[index]))
             smallest = left;
 
@@ -285,6 +286,8 @@ private:
             swap(heap[index], heap[smallest]);
             heapifyDown(smallest); // it's recursive
         }
+
+        // cout << "Finished to heapify" << endl;
     }
 
 public:
@@ -502,12 +505,10 @@ public:
         priorityQueue.insert(s, 0);
         int cycle = 0;
         
-        cout << "Queue status: " << priorityQueue << endl;
-        
         while (!priorityQueue.isEmpty())
         {
             cout << "Cycle number " << cycle << endl;
-            
+            cout << "Queue status: " << priorityQueue << endl;
             queue_element minElement = priorityQueue.extractMin();
 
             int u = get<0>(minElement);
@@ -519,16 +520,41 @@ public:
                     dist[v] = alt;
                     prev[v] = u;
                     if(priorityQueue.contains(v)) {
-                        priorityQueue.insert(v, alt);
-                    } else {
                         priorityQueue.chgPriority(v, alt);
+                    } else {
+                        priorityQueue.insert(v, alt);
                     }
                 }
             }
-            
+            cycle++; 
         }
 
         return prev;
+        
+    }
+
+    /**
+     * @brief Given a vector containing, for each node, the most convenient previous node, this method build the actual
+     * vector containg the simple sequence of nodes to go through in order to do the shortest path.
+     * 
+     * @param prev 
+     * @return vector<int> 
+     */
+    const vector<int> fromPrevToPath(const vector<int>& prev, int s, int t) {
+
+        bool stop = false;
+
+        vector<int> path;
+        path.push_back(t);
+        int n = t;
+        while(!stop)
+        {
+            int nodePrev = prev[n]; 
+            n = nodePrev;
+            path.push_back(n);
+            stop = (n == s); // stop criteria is to have reached the source
+        }
+        return path;
         
     }
 
@@ -553,8 +579,17 @@ int main() {
 
     cout << "Is the graph connected? " << graph.isConnected() << endl;
 
-    vector<int> shortestPath = sp.path(0, 3);
-    cout << "Shortest path from 0 to 3: " << endl;
+    int s = 0, t = 3;
+    vector<int> precedencies = sp.path(s, t);
+    cout << "Vector with precedencies, from 0 to 3: " << endl;
+    for(const auto& node : precedencies) {
+        cout << node << ", " ;
+    }
+
+    cout << endl;
+
+    vector<int> shortestPath = sp.fromPrevToPath(precedencies, s, t);
+    cout << "Vector with shortest path, from target to source: "<< endl;
     for(const auto& node : shortestPath) {
         cout << node << ", " ;
     }
