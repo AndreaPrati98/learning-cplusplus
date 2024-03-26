@@ -20,6 +20,10 @@ int main(int argc, char const *argv[])
         cout << *it << "\t";
     }
 
+    for(auto it = v.begin(); it != v.end(); it++) {
+        cout << *it << "\t";
+    }
+
     cout << endl;
 
     return 0;
