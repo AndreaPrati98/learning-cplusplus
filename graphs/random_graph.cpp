@@ -1,6 +1,8 @@
 #include <iostream>
 #include <ctime>
 #include <set>
+#include <fstream>
+
 
 using namespace std;
 
@@ -52,6 +54,7 @@ public:
     int get_edge_value(int** G, int x, int y); // Return the value associated with the edge (x, y)
     void set_edge_value(int** G, int x, int y, int value); // Set the value associated with the edge (x, y)
     bool is_connected(int *graph[]);
+    void print_on_file(string filename);
 
 private:
 
@@ -88,7 +91,7 @@ inline int randomWeight(double probabilityTrue, int minWeigth, int maxWeigth) {
         randomValue = (rand() % maxWeigth) + 1;
         // cout << static_cast<int>(randomValue) << endl;
         return static_cast<int>(randomValue);
-    }
+    } 
 
     return 0;
 
@@ -216,27 +219,34 @@ inline void Graph::set_edge_value(int** G, int x, int y, int value) {
     G[x][y] = G[y][x] = value;
 }
 
+void Graph::print_on_file(string filename) {
+    ofstream outp(filename);
+    
+    outp << "Number of vertices: " << numVertices << ", number of edges: " << numEdges << endl;
+
+    for (int i = 0; i < numVertices; i++)
+    {
+        for (int j = 0; j < numVertices; j++)
+        {
+            if(adjacencyMatrix[i][j]) {
+                outp << i << '\t' << j << 't' << adjacencyMatrix[i][j] << '\t';
+            }
+        }
+        
+    }
+    
+}
+
 int main() {
     
     Graph gr(SIZE, DENSITY);
     int** G = gr.get_graph();
 
-    set<int> neighbors = gr.neighbors(G, 3);
-
-    
-    cout << "Printing set of neighbors" << endl;
-    for (auto neighbor : neighbors)
-    {
-        cout << neighbor << ", ";
-    }
-    
-    cout << endl;
-
     bool isConnected = gr.is_connected(G);
 
     cout << "Is the graph connected? " << isConnected << endl;
 
-    // printMatrix(G, gr.V(G), gr.V(G));
+    gr.print_on_file("./graph_printed.txt");
 
     return 0;
 }
