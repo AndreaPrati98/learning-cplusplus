@@ -17,7 +17,7 @@ using namespace std;
 */
 
 int main() {
-    int i = 47;
+    int i = 47, j = 12;
     int &reference = i;
     int *pointer = &i;
 
@@ -35,6 +35,24 @@ int main() {
     void *voidP = &i; // void pointer can point to whatever
     double d = 3.14;
     voidP = &d;
+
+    // Let's see also a reference to a pointer int
+    int *&k = pointer; // the trick is to read from right to left
+    // k and pointer are the same object now. 
+
+    cout << endl;
+    int *pointer2 = &j;
+    cout << "Printing pointer2's value: \t" << pointer2 << endl;
+    cout << "Printing k's value: \t\t" << k << endl;
+    cout << "Printing pointer's value: \t" << pointer << endl;
+    k = pointer2;
+    cout << endl;
+    cout << "Printing pointer2's value: \t" << pointer2 << endl;
+    cout << "Printing k's value: \t\t" << k << endl;
+    cout << "Printing pointer's value: \t" << pointer << endl;
+
+    // of course, it's true we cannot change a reference but we can change the value of the reference
+    // and thus the original object we are referencing.
 
     return 0; // success
 }
