@@ -31,7 +31,11 @@ int main() {
 
 
     cout << "Printing pointer's address: \t" << &pointer << endl;
-    
+
+    void *voidP = &i; // void pointer can point to whatever
+    double d = 3.14;
+    voidP = &d;
+
     return 0; // success
 }
 
