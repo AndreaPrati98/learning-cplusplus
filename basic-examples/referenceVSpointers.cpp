@@ -16,6 +16,42 @@ using namespace std;
     
 */
 
+/**
+ * @brief Here I show how the const references are actually working. 
+ * It's important ot know that most of the time when a reference to constant is defined it actually is a reference of
+ * a temporary object created by the compiler. 
+ * 
+ * Example
+ * 
+ * double dval = 3.14;
+ * const int &ri = dval;
+ * 
+ * actually is compiled into something like:
+ * 
+ * const int temp = dval;
+ * const int &ref = temp;
+ * 
+ * And this makes sense, but actually could lead to problems.
+ *
+ * Moreover:
+ * 
+ * int &ri = dval;
+ *
+ * This is not possible because the compiler would not create a temp int variable to put dval,
+ * indeed, the programmer creates the ref ri to be able to modify dval through the reference.
+ * @return int 
+ */
+void constReferences() {
+    cout << "Exec constReferences()" << endl;
+    // ALLOWED BUT BAD
+    double dval = 3.14;
+    const int &ri = dval;
+    cout << ri << endl;
+
+    // NOT ALLOWED
+    // int &ri = dval;
+}
+
 int main() {
     int i = 47, j = 12;
     int &reference = i;
@@ -54,6 +90,16 @@ int main() {
     // of course, it's true we cannot change a reference but we can change the value of the reference
     // and thus the original object we are referencing.
 
+    // one of the exception in which type of reference != type of the object referenced
+    // is the const
+    int z = 41;
+    const int &ref = z;
+
+    // moreover
+    const int &badRef = d; // feasible, but wrong and dangerous
+
     return 0; // success
 }
+
+
 
