@@ -4,13 +4,17 @@ using namespace std;
 
 void without_iterator();
 void with_iterator();
+void double_each_el();
 
 int main() {
+
+    double_each_el();
 
     cout << "Without iterator" << endl;
     without_iterator();
     cout << "With iterator" << endl;
     with_iterator();
+
 
     return 0;
 }
@@ -47,8 +51,8 @@ void with_iterator() {
     cout << endl;
 }
 
-void power_per_element() {
-    vector<int> vec(10);
+void double_each_el() {
+    vector<int> vec{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
     for(auto vec_iterator = vec.begin();
             vec_iterator != vec.end();
@@ -56,4 +60,10 @@ void power_per_element() {
     {
         *vec_iterator *= 2;
     }
+    
+    for(const auto &el : vec) {
+        cout << el << " ";
+    }
+
+    cout << endl;
 }
