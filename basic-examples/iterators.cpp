@@ -46,3 +46,14 @@ void with_iterator() {
 
     cout << endl;
 }
+
+void power_per_element() {
+    vector<int> vec(10);
+
+    for(auto vec_iterator = vec.begin();
+            vec_iterator != vec.end();
+            ++vec_iterator) 
+    {
+        *vec_iterator *= 2;
+    }
+}
