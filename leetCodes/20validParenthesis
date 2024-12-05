@@ -1,0 +1,51 @@
+#include <iostream>
+#include <set>
+#include <map>
+
+using namespace std;
+
+class Solution {
+public:
+    bool isValid(string s) {
+        
+        const set<char> closings = { '}', ']', ')'};
+
+        stack<char> lifo = stack<char>();
+        const map<char, char> parenthesisMap = {
+            { '}', '{' },
+            { ']', '[' },
+            { ')', '(' }
+        };
+        
+        for(auto c : s)
+        {
+            if ( closings.find(c) == closings.end() ) 
+            {
+                cout << "Found opening parenthesis: " << c << endl;
+                // found opening parenthesis
+                lifo.push(c);
+            } else {
+                // found closing parenthesis
+                if ( lifo.empty() ) 
+                {
+                    cout << "Found closing parenthesis but stack is empty: " << c << endl;
+                    return false;
+                } 
+                
+                if ( lifo.top() != parenthesisMap.at(c)) 
+                {
+                    cout << "Found closing parenthesis but do not correspond with opening parenthesis" << endl;
+                    cout << "Found: "<< c << " but we have in stack: " << lifo.top() << endl;
+                    return false;
+                }
+
+                lifo.pop();
+            }
+                        
+        }
+
+        cout << "The end" << endl;
+        return lifo.empty();
+    }
+};
+
