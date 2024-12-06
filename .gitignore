@@ -34,4 +34,4 @@
 # Enviroment
 *.project
 *.DS_Store
-*.vscode
+*.vscode/*

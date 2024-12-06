@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/andrep/dev/git/learning-cplusplus/leetCodes/206reverseLinkedList'
+relocations:     []
+...
