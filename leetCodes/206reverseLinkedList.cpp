@@ -14,33 +14,17 @@ struct ListNode {
 class Solution {
 public:
     ListNode* reverseList(ListNode* head) {
-        ListNode *old = nullptr;
-        ListNode *n0 = head;
-        ListNode *n1 = nullptr;
-        ListNode *backup = nullptr;
-        
-        while(n0 != nullptr) 
-        {
-            if(n1 != nullptr) {
-                n1 = backup;
-            } else {
-                n1 = n0 -> next;
-            }
-            
-            if(n1 != nullptr) {
-                backup = n1 -> next;
-                n1 -> next = n0;
-                n0 -> next = old;
-            } else {
-                // we store in n2 the new head
-                cout << "Found the end" << endl;
-                backup = n0;
-            }
-            old = n0;
-            n0 = n1;
+        ListNode *prev = nullptr;
+        ListNode *curr = head;
+
+        while(curr) {
+            ListNode* tmp = curr -> next;
+            curr -> next = prev;
+            prev = curr;
+            curr = tmp; 
         }
-        
-        return backup;
+        debug(prev);
+        return prev;
     }
 
     void debug(ListNode* head) {
