@@ -54,11 +54,16 @@ public:
         if(tail != nullptr) {
             tail -> next = newTail;
             if(head == nullptr) {
+                // if tail was not null then we need to put as a head the old tail
                 head = tail;
             }
         } else {
-            tail = newTail;
+            if(head == nullptr) {
+                head = newTail;
+            }
         }
+        tail = newTail;
+        debug();
     }
 
     bool remove(int index) {
@@ -77,7 +82,12 @@ public:
                 if(oldCur != nullptr)
                 {
                     oldCur -> next = cur -> next;
+                    if(cur == tail) {
+                        // if we are removing the tail then we need a new tail
+                        tail = oldCur;
+                    }
                 } else {
+                    // it means we are removing the head
                     head = cur -> next;
                 }
                 return true;
