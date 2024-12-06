@@ -34,7 +34,6 @@ public:
             } else {
                 // we store in n2 the new head
                 cout << "Found the end" << endl;
-                debug()
                 backup = n0;
             }
             old = n0;

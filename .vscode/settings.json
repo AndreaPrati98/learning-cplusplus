@@ -54,6 +54,10 @@
         "typeinfo": "cpp",
         "unordered_map": "cpp",
         "variant": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "20validparenthesis": "cpp",
+        "stack": "cpp",
+        "map": "cpp",
+        "206reverselinkedlist": "cpp"
     }
 }
