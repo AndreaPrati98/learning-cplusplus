@@ -29,12 +29,13 @@ public:
 
         while(node != nullptr) {
             if( i == index ) {
+                debug();
                 return node -> value;
             }
             node = node -> next;
             ++i;
         } 
-
+        debug();
         return -1;
     }
 
@@ -46,6 +47,7 @@ public:
         }
         newHead -> next = head;
         head = newHead;
+        debug();
     }
     
     void insertTail(int val) {
@@ -88,14 +90,17 @@ public:
                     }
                 } else {
                     // it means we are removing the head
-                    head = cur -> next;
+                    head = cur -> next;                    
                 }
+                debug();
                 return true;
             }
             oldCur = cur;
             cur = cur -> next;
             ++i;
         }
+
+        debug();
         return false;
     }
 
@@ -110,4 +115,37 @@ public:
         }
         return *vec;
     }
+
+    void debug() {
+        ListNode *cur = head;
+
+        while(cur != nullptr) 
+        {
+            cout << "Node:" << cur << "\tval: " << cur -> value << "\tnext:" << cur -> next << "\n";
+            cur = cur -> next;   
+        }
+        cout << "\n\n";
+
+        return;
+    }
+};
+
+int main() {
+    LinkedList prova = LinkedList();
+    // ["insertTail", 1, "insertTail", 2, "get", 1, "remove", 1, "insertTail", 2, "get", 1, "get", 0]
+    cout << "Insert tail" << endl;
+    prova.insertTail(1);
+    cout << "Insert tail" << endl;
+    prova.insertTail(2);
+
+    cout << "Get" << endl;
+    cout << prova.get(1) << endl;
+
+    cout << "Remove" << endl;
+    prova.remove(1);
+
+    cout << "Insert tail" << endl;
+    prova.insertTail(2);
+    
+    return 0;
 };
