@@ -99,13 +99,34 @@ public:
                     cur -> prev -> next = newNode;
                 } else {
                     // cur is the head, need to update
-                    head = cur;
+                    head = newNode;
                 }
                 cur -> prev = newNode;
                 return;
             }
             ++i;
             cur = cur -> next;
+        }
+
+        if(i == index) {
+            if(tail){
+                // length of the list
+                tail -> next = new MyList::ListNode(val, tail, nullptr);
+                tail = tail -> next;
+            } else {
+                // checking if head or tail are null but not at the same time
+                // if one is null and the other is not, then we have a problem...
+                bool xorHeadTailNullCheck = (!head || !tail) && !(!head && !tail);
+                if(xorHeadTailNullCheck){
+                    cerr << "Disastrous!!! We made a mess :q" << endl;
+                    return;
+                }
+
+                // the index was zero but the list is empty
+                head = new MyList::ListNode(val, nullptr, head);
+                tail = head;
+                
+            }
         }
     }
     
@@ -151,13 +172,12 @@ public:
 
 void test1();
 void test2();
+void test3();
 
 int main() {
     
-    cout << "_____Test1_____" << endl;
-    test1();
-    cout << "_____Test2_____" << endl;
-    test2();
+    cout << "_____Test3_____" << endl;
+    test3();
 
     return 0;
 }
@@ -199,6 +219,19 @@ void test1() {
     l.addAtIndex(5,0);
     l.addAtHead(6);
 
+}
+
+void test3() {
+
+    MyLinkedList l = MyLinkedList();
+    // ["MyLinkedList","addAtIndex","addAtIndex","addAtIndex","get"]
+    // [[],[0,10],[0,20],[1,30],[0]]
+    l.addAtIndex(0,10);
+    l.addAtIndex(0,20);
+    l.addAtIndex(1,30);
+    l.get(0);
+    l.debug();
+    
 }
 
 /**
