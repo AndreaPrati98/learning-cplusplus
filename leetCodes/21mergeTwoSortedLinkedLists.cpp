@@ -16,49 +16,34 @@ void test1(ListNode* &, ListNode* &);
 class Solution {
 public:
 
-    inline void interlaceNodes(ListNode* &n0, ListNode* &n1) {
-        ListNode *tmp = n0 -> next;
-        n0 -> next = n1;
-        n0 = tmp;
-    }
-
     ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
-        ListNode *first = list1;
-        ListNode *second = list2;
-        
-        while(first && second) 
+        ListNode starting = ListNode();
+        ListNode *cur = &starting;
+
+        ListNode* i = list1;
+        ListNode* j = list2;
+
+        while(i && j)
         {
-            cout << "First: "<< first << " val: " << first -> val <<"\tSecond: " << second << " val: " << second -> val << endl;
-            if((first -> val) < (second -> val))
+            if(i -> val < j -> val)
             {
-                interlaceNodes(first, second);
+                cur -> next = i;
+                i = i -> next;
             } 
             else 
             {
-                bool equalValues = first -> val == second -> val;
-                bool noNullptrs = first -> next != nullptr && second -> next != nullptr;
-
-                if (equalValues && noNullptrs)
-                {
-                    cout << "here" << endl;
-                    if((first -> next -> val) <= (second -> next -> val)) {
-                        interlaceNodes(first, second);
-                    } else {
-                        interlaceNodes(second, first);
-                    }
-                } else {
-                    cout << "Now here" << endl;
-                    interlaceNodes(second, first);
-                }
-            }   
+                cur -> next = j;
+                j = j -> next;
+            }
+            cur = cur -> next;
         }
 
-        // need to understand what is pointing what
-        // to figure out the first node
-        if((list1 != nullptr) && (list1 -> next == list2))
-            return list1;
-        else
-            return list2;
+        if(i)
+            cur -> next = i;
+        else 
+            cur -> next = j;
+        
+        return starting.next;
     }
 
     void debug(ListNode* head) {
