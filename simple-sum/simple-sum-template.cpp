@@ -1,5 +1,6 @@
 #include <iostream>
 #include <ctime>
+#include <person>
 
 
 using namespace std;

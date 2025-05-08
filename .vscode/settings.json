@@ -58,6 +58,11 @@
         "20validparenthesis": "cpp",
         "stack": "cpp",
         "map": "cpp",
-        "206reverselinkedlist": "cpp"
+        "206reverselinkedlist": "cpp",
+        "memory": "cpp",
+        "format": "cpp",
+        "functional": "cpp",
+        "print": "cpp",
+        "utility": "cpp"
     }
 }
